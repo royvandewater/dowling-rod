@@ -15,7 +15,7 @@ class DowlingRod
   def conditions
     return @conditions unless @conditions.nil?
     xml = Nokogiri::XML(RestClient.get API_URL + @zipcode.to_s)
-    @conditions = xml.xpath('//condition').collect {|condition| condition.attr 'data'}
+    @conditions = xml.xpath('//current_conditions/condition').collect {|condition| condition.attr 'data'}
   end
 
   def write_conditions_to_file(filename)
@@ -26,6 +26,6 @@ class DowlingRod
 end
 
 if __FILE__ == $0
-  dowling_rod = DowlingRod.new :zipcode => 85225
+  dowling_rod = DowlingRod.new :zipcode => 98115 # Seattle
   dowling_rod.write_conditions_to_file 'weather.txt'
 end
